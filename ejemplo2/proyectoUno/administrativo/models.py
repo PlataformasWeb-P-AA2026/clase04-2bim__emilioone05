@@ -1,16 +1,15 @@
 from django.db import models
 
-# Create your models here.
-
 class Estudiante(models.Model):
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=30)
     cedula = models.CharField(max_length=30, unique=True)
 
     def __str__(self):
-        return "%s %s %s" % (self.nombre, 
-                self.apellido,
-                self.cedula)
+        return "%s %s %s" % (self.nombre, self.apellido, self.cedula)
+
+    def obtener_numeros_telefonicos(self): 
+        return len(self.numeros_telefonicos.all())
 
 class NumeroTelefonico(models.Model):
     telefono = models.CharField(max_length=100)
@@ -21,3 +20,10 @@ class NumeroTelefonico(models.Model):
     def __str__(self):
         return "%s %s" % (self.telefono, self.tipo)
 
+    def obtenerOperadora(self):
+        if self.telefono.startswith("099"):
+            return "Claro"
+        elif self.telefono.startswith("098"):
+            return "Movistar"
+        else:
+            return "Número convencional"
