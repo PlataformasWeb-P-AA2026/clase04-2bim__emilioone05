@@ -52,6 +52,26 @@ class NumeroTelefonicoForm(ModelForm):
     class Meta:
         model = NumeroTelefonico
         fields = ['telefono', 'tipo', 'estudiante']
+        labels = {
+            'telefono': _('Ingrese teléfono por favor'),
+            'tipo': _('Ingrese tipo por favor'),
+            'estudiante': _('Seleccione estudiante por favor'),
+        }
+
+    def clean_telefono(self):
+        valor = self.cleaned_data['telefono']
+        if len(valor) != 10:
+            raise forms.ValidationError("Ingrese teléfono con 10 dígitos")
+        if not valor.startswith(("099", "098")):
+            raise forms.ValidationError("El teléfono debe iniciar con 099 o 098")
+        return valor
+
+    def clean_tipo(self):
+        valor = self.cleaned_data['tipo']
+        num_palabras = len(valor.split())
+        if num_palabras < 1:
+            raise forms.ValidationError("Ingrese el tipo por favor")
+        return valor
 
 
 class NumeroTelefonicoEstudianteForm(ModelForm):
@@ -60,8 +80,26 @@ class NumeroTelefonicoEstudianteForm(ModelForm):
         super(NumeroTelefonicoEstudianteForm, self).__init__(*args, **kwargs)
         self.initial['estudiante'] = estudiante
         self.fields["estudiante"].widget = forms.widgets.HiddenInput()
-        print(estudiante)
 
     class Meta:
         model = NumeroTelefonico
         fields = ['telefono', 'tipo', 'estudiante']
+        labels = {
+            'telefono': _('Ingrese teléfono por favor'),
+            'tipo': _('Ingrese tipo por favor'),
+        }
+
+    def clean_telefono(self):
+        valor = self.cleaned_data['telefono']
+        if len(valor) != 10:
+            raise forms.ValidationError("Ingrese teléfono con 10 dígitos")
+        if not valor.startswith(("099", "098")):
+            raise forms.ValidationError("El teléfono debe iniciar con 099 o 098")
+        return valor
+
+    def clean_tipo(self):
+        valor = self.cleaned_data['tipo']
+        num_palabras = len(valor.split())
+        if num_palabras < 1:
+            raise forms.ValidationError("Ingrese el tipo por favor")
+        return valor
