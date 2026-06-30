@@ -1,0 +1,17 @@
+{% extends "master.html" %}
+
+{% block title %}
+  Crear Comentario
+{% endblock %}
+
+{% block content %}
+<h3>Crear Comentario</h3>
+
+<form method="post" id="contact">
+  {% csrf_token %}
+  {{ formulario.as_p }}
+  <div class="main-blue-button">
+    <button type="submit">Guardar</button>
+  </div>
+</form>
+{% endblock %}
