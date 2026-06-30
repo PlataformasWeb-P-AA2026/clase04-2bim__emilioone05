@@ -28,7 +28,15 @@
           <li><a href="{% url 'lista_chefs' %}">Chefs</a></li>
             <li><a href="{% url 'lista_platos' %}">Platos</a></li>
           {% if user.is_authenticated %}
-            <li><a href="{% url 'logout_view' %}">Salir</a></li>
+          <li><a href="{% url 'crear_comentario' %}">Comentar</a></li>
+          {% endif %}
+          {% if user.is_authenticated %}
+            <li>
+              <form method="post" action="{% url 'logout_view' %}" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Salir</button>
+              </form>
+            </li>
           {% else %}
             <li><a href="{% url 'login' %}">Ingresar</a></li>
           {% endif %}

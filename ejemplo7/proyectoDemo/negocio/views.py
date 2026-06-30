@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, permission_required
+from negocio.forms import ComentarioForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -151,3 +152,15 @@ def ver_plato(request, id):
     informacion_template = {'objeto': plato}
     return render(request, 'ver_plato.html',
                   informacion_template)
+@login_required
+def crear_comentario(request):
+    if request.method == 'POST':
+        formulario = ComentarioForm(request.POST)
+        if formulario.is_valid():
+            comentario = formulario.save(commit=False)
+            comentario.usuario = request.user
+            comentario.save()
+            return redirect('index')
+    else:
+        formulario = ComentarioForm()
+    return render(request, 'crearComentario.html', {'formulario': formulario})
